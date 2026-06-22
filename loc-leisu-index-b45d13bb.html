@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雷速 · 知识库入口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f5f7;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            color: #1a2b34;
+            padding: 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* 蓝绿色点缀主题 */
+        .accent-bg {
+            background: linear-gradient(145deg, #ebf7f5 0%, #d5ece8 100%);
+        }
+
+        .accent-border {
+            border-left: 4px solid #3caea3;
+        }
+
+        .accent-tag {
+            background: #3caea3;
+            color: #fff;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        /* 网格卡片 */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .grid-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .grid-cards {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px 20px;
+            box-shadow: 0 8px 20px -6px rgba(60, 174, 163, 0.12);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 30px -8px rgba(60, 174, 163, 0.2);
+        }
+
+        .card-icon {
+            font-size: 1.6rem;
+            margin-bottom: 6px;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #0f292f;
+        }
+
+        .card p {
+            font-size: 0.92rem;
+            color: #2c4650;
+            flex: 1;
+        }
+
+        .card .accent-tag {
+            align-self: flex-start;
+            margin-top: 14px;
+        }
+
+        /* hero 区域 */
+        .hero {
+            padding: 30px 24px 28px;
+            border-radius: 28px;
+            margin-bottom: 36px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            border-bottom: 2px solid #c1dfda;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            line-height: 1.2;
+            margin-bottom: 14px;
+            color: #0d3833;
+        }
+
+        .hero h1 small {
+            display: inline-block;
+            background: #3caea3;
+            color: white;
+            font-size: 0.8rem;
+            padding: 0 12px;
+            border-radius: 40px;
+            vertical-align: middle;
+            margin-left: 10px;
+            font-weight: 500;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: #2f4d55;
+            max-width: 680px;
+            margin-bottom: 20px;
+        }
+
+        .hero .hint {
+            background: #e7f3f1;
+            padding: 10px 16px;
+            border-radius: 40px;
+            display: inline-block;
+            font-size: 0.9rem;
+            color: #1c554b;
+            border-left: 3px solid #3caea3;
+        }
+
+        /* 信息区 / 双列 */
+        .two-col {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        @media (min-width: 700px) {
+            .two-col {
+                flex-direction: row;
+            }
+            .two-col > * {
+                flex: 1;
+            }
+        }
+
+        .info-panel {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .info-panel h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-bottom: 1px solid #dce8e5;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            color: #0c3731;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-panel ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-panel li {
+            padding: 6px 0;
+            border-bottom: 1px dashed #e1edeb;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .info-panel li::before {
+            content: "▹";
+            color: #3caea3;
+            font-weight: bold;
+        }
+
+        .faq-item {
+            margin-bottom: 18px;
+        }
+
+        .faq-item strong {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #154942;
+        }
+
+        .faq-item p {
+            font-size: 0.92rem;
+            color: #2f4d55;
+        }
+
+        .notice-box {
+            background: #e1f0ed;
+            border-radius: 18px;
+            padding: 18px 20px;
+            margin: 24px 0 16px;
+            font-size: 0.95rem;
+            border-left: 5px solid #3caea3;
+        }
+
+        .notice-box strong {
+            color: #0b413a;
+        }
+
+        .link-sentence {
+            background: #ffffff;
+            padding: 14px 20px;
+            border-radius: 40px;
+            display: inline-block;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            margin: 10px 0;
+        }
+
+        .link-sentence a {
+            color: #136b60;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid #b3dbd4;
+            transition: border-color 0.15s;
+        }
+
+        .link-sentence a:hover {
+            border-bottom-color: #3caea3;
+        }
+
+        a {
+            color: #136b60;
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #c7dbd6;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #4b6b6f;
+        }
+
+        .tagline {
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            color: #3e6b65;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #d0e2de;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- hero -->
+    <div class="hero">
+        <h1>
+            雷速知识库
+            <small>知 · 用</small>
+        </h1>
+        <p>
+            一个帮你快速识别 <strong>雷速</strong> 用途、查找常见概念与使用路径的轻量入口。
+            页面按目录感组织，您可以直接浏览卡片，或顺着提示区、相关区找到想要的答案。
+        </p>
+        <div class="hint">
+            ⚡ 以知识库的方式，认识 <a href="https://loc-leisu.com" style="color:#0d554a;font-weight:600;text-decoration:underline;">雷速</a> 是什么、能做什么、怎么开始。
+        </div>
+    </div>
+
+    <!-- 网格卡片：目录感 -->
+    <div class="grid-cards">
+        <div class="card">
+            <div class="card-icon">📖</div>
+            <h3>站点身份</h3>
+            <p>雷速定位为信息聚合与工具支持站点，面向日常查询、轻量管理与快速跳转场景，界面去冗，专注效率。</p>
+            <span class="accent-tag">基础</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">🧩</div>
+            <h3>常用模块</h3>
+            <p>包括速览面板、快速入口、说明归档与状态提示，各模块之间保持低耦合，方便你按需取用。</p>
+            <span class="accent-tag">结构</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">⚙️</div>
+            <h3>使用方式</h3>
+            <p>无需复杂配置，打开即用。在 <a href="https://loc-leisu.com" style="color:#0b4a41;font-weight:600;">雷速</a> 内可通过导航或搜索直达目标，适合日常轻度操作。</p>
+            <span class="accent-tag">入门</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">🔄</div>
+            <h3>更新习惯</h3>
+            <p>内容与结构会不定期调整，以适配更清晰的归类。建议偶尔回看，了解最新布局与提示。</p>
+            <span class="accent-tag">维护</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">📌</div>
+            <h3>适用场景</h3>
+            <p>日常信息查阅、轻量管理、快速跳转、备忘索引。不适合重交互或实时协作场景。</p>
+            <span class="accent-tag">场景</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">🗂️</div>
+            <h3>相关资源</h3>
+            <p>站内提供基础说明与指引，外部资源可配合其他工具使用。所有信息均以本站内容为准。</p>
+            <span class="accent-tag">关联</span>
+        </div>
+    </div>
+
+    <!-- 说明区＋提示区 双列 -->
+    <div class="two-col">
+        <!-- 说明区 -->
+        <div class="info-panel">
+            <h2><span>📋</span> 说明区</h2>
+            <ul>
+                <li>雷速 并非综合性门户，而是针对特定用途的知识节点。</li>
+                <li>所有功能模块均可在首页或内页找到对应入口。</li>
+                <li>如果你对某个卡片或提示有疑问，可直接在相关区域寻找说明。</li>
+                <li>站内不插入广告或推广链接，保持内容纯粹。</li>
+                <li>结构遵循“最小认知成本”原则，减少跳转层级。</li>
+            </ul>
+            <div style="margin-top:14px; font-size:0.9rem; background:#f4faf8; padding:8px 14px; border-radius:30px;">
+                💡 想进一步了解？试试直接访问 <a href="https://loc-leisu.com" style="font-weight:600;">雷速</a> 首页。
+            </div>
+        </div>
+
+        <!-- 提示区 -->
+        <div class="info-panel">
+            <h2><span>💬</span> 提示区</h2>
+            <div class="faq-item">
+                <strong>❓ 如何快速找到某个功能？</strong>
+                <p>建议先浏览上方卡片目录，再根据场景定位。如果仍然不确定，可以查看页脚相关区，或直接访问 <a href="https://loc-leisu.com">雷速</a> 站点内导航。</p>
+            </div>
+            <div class="faq-item">
+                <strong>❓ 页面是否适配手机？</strong>
+                <p>完全适配。网格和双列会自动调整为单列，按钮和链接均保留合适触控区域。</p>
+            </div>
+            <div class="faq-item">
+                <strong>❓ 信息多久更新？</strong>
+                <p>随站点内容调整而更新，无固定周期。但主要框架保持稳定。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 相关信息区 -->
+    <div class="notice-box">
+        <strong>📎 相关信息区</strong> —— 
+        雷速 站点整体偏向轻量与实用，如果你喜欢低干扰的浏览体验，可以将其加入书签。
+        此外，本知识库入口本身也属于 <a href="https://loc-leisu.com" style="color:#0a4c42;font-weight:600;">雷速</a> 的辅助说明页，两者内容相互补充。
+    </div>
+
+    <!-- 一个自然包含链接的句子 -->
+    <div class="link-sentence">
+        <span>🔗 想直接开始？你可以随时前往 <a href="https://loc-leisu.com">雷速</a> 查看完整界面与功能。</span>
+    </div>
+
+    <!-- 额外FAQ摘要 -->
+    <div style="margin-top:20px; display:flex; flex-wrap:wrap; gap:16px;">
+        <div style="flex:1; min-width:180px; background:white; border-radius:18px; padding:16px;">
+            <div style="font-weight:600; color:#0e4941;">📌 常见认知</div>
+            <ul style="list-style:none; padding-left:0; font-size:0.9rem; margin-top:8px;">
+                <li style="padding:3px 0;">· 雷速 不是博客或论坛</li>
+                <li style="padding:3px 0;">· 雷速 不收集个人隐私</li>
+                <li style="padding:3px 0;">· 雷速 提供的功能即开即用</li>
+            </ul>
+        </div>
+        <div style="flex:1; min-width:180px; background:white; border-radius:18px; padding:16px;">
+            <div style="font-weight:600; color:#0e4941;">📌 场景备忘</div>
+            <ul style="list-style:none; padding-left:0; font-size:0.9rem; margin-top:8px;">
+                <li style="padding:3px 0;">· 信息查阅 → 卡片/说明区</li>
+                <li style="padding:3px 0;">· 快速跳转 → 首页入口</li>
+                <li style="padding:3px 0;">· 理解用途 → 本页整体描述</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer-note">
+        <span class="tagline">雷速 · 知识库入口</span>
+        <br>
+        <span style="opacity:0.7;">基于使用场景组织，帮助快速识别站点用途 · 内容仅供参考</span>
+    </div>
+
+</div>
+</body>
+</html>
